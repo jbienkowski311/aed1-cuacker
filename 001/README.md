@@ -6,6 +6,7 @@ En nuestro sistema de nano-blogging, existen los llamados pcuac, que son mensaje
 En concreto, existen 30 mensajes predefinidos, que se muestran en la siguiente tabla.
 
 | Número | Mensaje |
+| --- | --- |
 | 1 | Afirmativo. |
 | 2 | Negativo. |
 | 3 | Estoy de viaje en el extranjero. |
