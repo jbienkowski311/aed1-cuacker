@@ -1,4 +1,4 @@
-# 004 -  El tipo de datos Cuac
+# 004 - El tipo de datos Cuac
 
 ## Contexto
 
