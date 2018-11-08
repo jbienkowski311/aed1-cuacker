@@ -24,7 +24,6 @@ clean:
 	rm -f *.o *.in *.out *.tar
 
 tar:
-	# tar -cf archivo.tar *.cpp *.h *.hpp Makefile
-	tar -cf archivo.tar *.cpp Makefile
+	tar -cf archivo.tar *.cpp *.hpp Makefile
 
 .PHONY: clean diff inputs tar
