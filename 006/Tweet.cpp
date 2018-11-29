@@ -51,6 +51,14 @@ bool Tweet::operator>(const Tweet &t) const {
   return published > t.published;
 }
 
+bool Tweet::operator==(const Tweet &t) {
+  return author == t.author && message == t.message && published == t.published;
+}
+
+bool Tweet::operator==(const Tweet &t) const {
+  return author == t.author && message == t.message && published == t.published;
+}
+
 ostream &operator<<(ostream &os, const Tweet &t) {
   os << t.author << " " << t.published << endl;
   os << "   " << t.message;

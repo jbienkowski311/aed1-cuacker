@@ -1,15 +1,21 @@
 #include "TweetDictionary.hpp"
+#include <algorithm>
 
 TweetDictionary::TweetDictionary() { tweets.clear(); }
 
 int TweetDictionary::count() { return (int)tweets.size(); }
 
 void TweetDictionary::insert(Tweet* tweet) {
-  tweets.push_back(tweet);
-  tweets.sort([](const Tweet* const& a, const Tweet* const& b) -> bool {
-    return *a > *b;
-  });
-  tweets.unique();
+  bool exists = (find_if(tweets.begin(), tweets.end(),
+                         [tweet](const Tweet* const& t) -> bool {
+                           return *tweet == *t;
+                         }) != tweets.end());
+  if (!exists) {
+    tweets.push_back(tweet);
+    tweets.sort([](const Tweet* const& a, const Tweet* const& b) -> bool {
+      return *a > *b;
+    });
+  }
   cout << count() << " cuac" << endl;
 }
 
