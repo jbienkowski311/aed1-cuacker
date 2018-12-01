@@ -28,6 +28,8 @@ class AVL {
  private:
   Node<TK, TV>* root;
 
+  Node<TK, TV>* newNode(TK key, TV value);
+  Node<TK, TV>* newNode(TK key, TV value, Node<TK, TV>* parent);
   void rebalance(Node<TK, TV>* n);
   int height(Node<TK, TV>* n);
   void setBalance(Node<TK, TV>* n);

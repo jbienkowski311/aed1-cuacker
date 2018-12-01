@@ -9,10 +9,7 @@
 template <class TK, class TV>
 bool AVL<TK, TV>::insert(TK key, TV value) {
   if (root == NULL) {
-    root = new Node<TK, TV>();
-    root->key = key;
-    root->values.clear();
-    root->values.push_back(value);
+    root = newNode(key, value);
   } else {
     bool goLeft;
     Node<TK, TV> *n = root, *parent;
@@ -36,17 +33,9 @@ bool AVL<TK, TV>::insert(TK key, TV value) {
     }
 
     if (goLeft) {
-      parent->left = new Node<TK, TV>();
-      parent->left->key = key;
-      parent->left->parent = parent;
-      parent->left->values.clear();
-      parent->left->values.push_back(value);
+      parent->left = newNode(key, value, parent);
     } else {
-      parent->right = new Node<TK, TV>();
-      parent->right->key = key;
-      parent->right->parent = parent;
-      parent->right->values.clear();
-      parent->right->values.push_back(value);
+      parent->right = newNode(key, value, parent);
     }
 
     rebalance(parent);
@@ -83,6 +72,22 @@ Node<TK, TV> *AVL<TK, TV>::getRoot() {
 //
 // PRIVATE
 //
+template <class TK, class TV>
+Node<TK, TV> *AVL<TK, TV>::newNode(TK key, TV value) {
+  Node<TK, TV> *node = new Node<TK, TV>();
+  node->key = key;
+  node->values.clear();
+  node->values.push_back(value);
+  return node;
+}
+
+template <class TK, class TV>
+Node<TK, TV> *AVL<TK, TV>::newNode(TK key, TV value, Node<TK, TV> *parent) {
+  Node<TK, TV> *node = newNode(key, value);
+  node->parent = parent;
+  return node;
+}
+
 template <class TK, class TV>
 void AVL<TK, TV>::rebalance(Node<TK, TV> *n) {
   setBalance(n);
