@@ -13,7 +13,6 @@ bool AVL<TK, TV>::insert(TK key, TV value) {
     root->key = key;
     root->values.clear();
     root->values.push_back(value);
-    root->values.sort([](const TV &a, const TV &b) -> bool { return a > b; });
   } else {
     bool goLeft;
     Node<TK, TV> *n = root, *parent;
@@ -21,7 +20,13 @@ bool AVL<TK, TV>::insert(TK key, TV value) {
     while (n != NULL) {
       if (n->key == key && (find(n->values.begin(), n->values.end(), value) !=
                             n->values.end())) {
-        return false;
+        typename list<TV>::iterator it = n->values.begin();
+        while (it != n->values.end() && (*it) < value) {
+          it++;
+        }
+        n->values.insert(it, value);
+
+        return true;
       }
 
       parent = n;
@@ -36,16 +41,12 @@ bool AVL<TK, TV>::insert(TK key, TV value) {
       parent->left->parent = parent;
       parent->left->values.clear();
       parent->left->values.push_back(value);
-      parent->left->values.sort(
-          [](const TV &a, const TV &b) -> bool { return a > b; });
     } else {
       parent->right = new Node<TK, TV>();
       parent->right->key = key;
       parent->right->parent = parent;
       parent->right->values.clear();
       parent->right->values.push_back(value);
-      parent->right->values.sort(
-          [](const TV &a, const TV &b) -> bool { return a > b; });
     }
 
     rebalance(parent);
