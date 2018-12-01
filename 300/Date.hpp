@@ -22,8 +22,6 @@ class Date {
   bool operator>(const Date &d) const;
   bool operator==(const Date &d);
   bool operator==(const Date &d) const;
-  static Date parse(string date, string hour);
-  static Date parse(string date);
   time_t toCTime() const;
 };
 #endif

@@ -28,11 +28,13 @@ bool Command::isExit(string command) { return command == "exit"; }
 bool Command::isMcuac(string command) { return command == "mcuac"; }
 
 void Command::interpretMcuac(TweetDictionary* dictionary) {
-  string author, date, time, message;
+  int D, M, Y, h, m, s;
+  char c;
+  string author, message;
 
   cin >> author;
   if (cin.fail()) return;
-  cin >> date >> time;
+  cin >> D >> c >> M >> c >> Y >> h >> c >> m >> c >> s;
   if (cin.fail()) return;
   // fix problem with cin and getline
   // cin leaves \n character therefore the first getline()
@@ -40,10 +42,10 @@ void Command::interpretMcuac(TweetDictionary* dictionary) {
   cin.ignore(100, '\n');
   getline(cin, message);
 
-  Date* published = new Date();
-  *published = Date::parse(date, time);
+  Date* published = new Date(D, M, Y, h, m, s);
 
   Tweet* tweet = new Tweet(*published, author, message);
+
   dictionary->insert(tweet);
 }
 
@@ -51,12 +53,14 @@ bool Command::isPcuac(string command) { return command == "pcuac"; }
 
 void Command::interpretPcuac(TweetDictionary* dictionary) {
   const map<int, string> predefinedMessages = Messages::create();
-  string author, date, time, message;
+  int D, M, Y, h, m, s;
+  char c;
+  string author, message;
   int messageNumber;
 
   cin >> author;
   if (cin.fail()) return;
-  cin >> date >> time;
+  cin >> D >> c >> M >> c >> Y >> h >> c >> m >> c >> s;
   if (cin.fail()) return;
   // fix problem with cin and getline
   // cin leaves \n character therefore the first getline()
@@ -64,12 +68,12 @@ void Command::interpretPcuac(TweetDictionary* dictionary) {
   cin.ignore(100, '\n');
   getline(cin, message);
 
-  Date* published = new Date();
-  *published = Date::parse(date, time);
+  Date* published = new Date(D, M, Y, h, m, s);
   messageNumber = stoi(message);
   message = predefinedMessages.find(messageNumber)->second;
 
   Tweet* tweet = new Tweet(*published, author, message);
+
   dictionary->insert(tweet);
 }
 
@@ -94,11 +98,13 @@ void Command::interpretFollow(TweetDictionary* dictionary) {
 bool Command::isDate(string command) { return command == "date"; }
 
 void Command::interpretDate(TweetDictionary* dictionary) {
-  string startDate, startHour, endDate, endHour;
-  cin >> startDate >> startHour >> endDate >> endHour;
+  int D, M, Y, h, m, s;
+  char c;
 
-  Date start = Date::parse(startDate, startHour);
-  Date end = Date::parse(endDate, endHour);
+  cin >> D >> c >> M >> c >> Y >> h >> c >> m >> c >> s;
+  Date start = Date(D, M, Y, h, m, s);
+  cin >> D >> c >> M >> c >> Y >> h >> c >> m >> c >> s;
+  Date end = Date(D, M, Y, h, m, s);
 
   dictionary->date(start, end);
 }

@@ -53,7 +53,9 @@ void AVL<TK, TV>::last(Node<TK, TV> *n, list<TV> &values, int limit) {
     return;
   }
 
-  last(n->right, values, limit);
+  if (n->right != NULL) {
+    last(n->right, values, limit);
+  }
 
   typename list<TV>::iterator it = n->values.begin();
   while (it != n->values.end() && (int)values.size() < limit) {
@@ -61,7 +63,9 @@ void AVL<TK, TV>::last(Node<TK, TV> *n, list<TV> &values, int limit) {
     it++;
   }
 
-  last(n->left, values, limit);
+  if (n->left != NULL) {
+    last(n->left, values, limit);
+  }
 }
 
 template <class TK, class TV>
