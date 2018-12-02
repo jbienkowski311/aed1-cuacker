@@ -1,7 +1,6 @@
 #ifndef _CLASS_DATE
 #define _CLASS_DATE
 
-#include <ctime>
 #include <iostream>
 #include <string>
 
@@ -22,6 +21,6 @@ class Date {
   bool operator>(const Date &d) const;
   bool operator==(const Date &d);
   bool operator==(const Date &d) const;
-  time_t toCTime() const;
+  long long int toSeconds() const;
 };
 #endif

@@ -96,23 +96,35 @@ template <class TK, class TV>
 void AVL<TK, TV>::rebalance(Node<TK, TV> *n) {
   setBalance(n);
 
-  if (n->balance == -2) {
-    if (height(n->left->left) >= height(n->left->right)) {
-      n = rotateRight(n);
-    } else {
-      n = rotateDoubleLeft(n);
-    }
-  } else if (n->balance == 2) {
-    if (height(n->right->right) >= height(n->right->left)) {
-      n = rotateLeft(n);
-    } else {
-      n = rotateDoubleRight(n);
-    }
+  switch (n->balance) {
+    case 0:
+      if (n->parent == NULL) {
+        root = n;
+      }
+      return;
+    case -2:
+      if (height(n->left->left) >= height(n->left->right)) {
+        n = rotateRight(n);
+      } else {
+        n = rotateDoubleLeft(n);
+      }
+      break;
+    case 2:
+      if (height(n->right->right) >= height(n->right->left)) {
+        n = rotateLeft(n);
+      } else {
+        n = rotateDoubleRight(n);
+      }
+      break;
+    case 1:
+    case -1:
+      if (n->parent != NULL) {
+        rebalance(n->parent);
+      }
+      break;
   }
 
-  if (n->parent != NULL) {
-    rebalance(n->parent);
-  } else {
+  if (n->parent == NULL) {
     root = n;
   }
 }

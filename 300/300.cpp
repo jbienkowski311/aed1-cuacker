@@ -1,9 +1,7 @@
 #include <iostream>
 #include <string>
 #include "Command.hpp"
-#include "Date.hpp"
-#include "Messages.hpp"
-#include "Tweet.hpp"
+#include "TweetDictionary.hpp"
 
 using namespace std;
 

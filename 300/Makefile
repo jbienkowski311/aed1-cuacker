@@ -1,16 +1,13 @@
 PROGRAM=300
 
-a.out: AVL.o Command.o Date.o Tweet.o TweetDictionary.o Messages.o
-	g++ -std=c++11 $(PROGRAM).cpp AVL.o Command.o Date.o Tweet.o TweetDictionary.o Messages.o -Werror -Wall
+a.out: AVL.o Command.o Date.o Tweet.o TweetDictionary.o
+	g++ -std=c++11 -O3 $(PROGRAM).cpp AVL.o Command.o Date.o Tweet.o TweetDictionary.o -Werror -Wall
 
 AVL.o: AVL.hpp Date.hpp Tweet.hpp
 	g++ -std=c++11 -c AVL.cpp -Werror -Wall
 
-Command.o: Command.hpp Date.hpp Messages.hpp TweetDictionary.hpp
+Command.o: Command.hpp Date.hpp TweetDictionary.hpp
 	g++ -std=c++11 -c Command.cpp -Werror -Wall
-
-Messages.o: Messages.hpp
-	g++ -std=c++11 -c Messages.cpp -Werror -Wall
 
 Tweet.o: Tweet.hpp Date.hpp
 	g++ -std=c++11 -c Tweet.cpp -Werror -Wall

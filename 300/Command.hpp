@@ -3,8 +3,11 @@
 
 using namespace std;
 
+const int NUM_PCUACS = 30;
+
 class Command {
  public:
+  static string messages[NUM_PCUACS];
   static void interpret(string command, TweetDictionary* dictionary);
   static bool isExit(string command);
 
