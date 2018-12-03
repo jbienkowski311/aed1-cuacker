@@ -1,18 +1,17 @@
-# 006 - Diccionario de Cuacs con Listas 
+# Árboles de Cuacs para Last
 
 ## Contexto
 
-En este ejercicio vamos a crear una primera versión funcional del CUACKER. El elemento básico será el contenedor, el diccionario de cuacs. Empezaremos con una implementación muy sencilla mediante una lista de cuacs. Crearemos una nueva clase DiccionarioCuacs que contendrá una lista donde se inserten los cuacs ordenados por fecha. Todas las operaciones de consulta obligatorias (last, follow y date) se harán mediante simples recorridos en esta lista.
+Las tablas de dispersión de usuarios nos ofrecen una buena eficiencia para las operaciones follow de consulta por usuario. Pero, ¿qué pasa con las operaciones de consulta por fechas, last y date? Necesitaríamos recorrer toda la lista de cuacs, lo cual es muy ineficiente cuando el número de cuacs cree mucho.
+
+Por ese motivo, en estos ejercicios vamos a optimizar los comandos de consulta por fecha usando árboles. En concreto, el objetivo es analizar, diseñar e implementar una estructura de datos de árboles que nos permita consultar rápidamente los últimos cuacs y los que están dentro de cierto rango de fechas. En este ejercicio se comprobará el funcionamiento correcto de la operación last, y en el siguiente el funcionamiento de date.
 
 ## El Problema
 
-Crear una nueva clase DiccionarioCuacs para almacenar listas de cuacs. Con ella, escribir un programa que sea capaz de procesar los comandos `mcuac`, `pcuac`, `last`, `follow` y `date`:
+Tomando como base el programa del ejercicio 200, añadir una estructura de árboles donde las claves son las fechas y el valor asociado son los cuacs correspondientes. Por lo tanto, en los comandos mcuac y pcuac se debe insertar tanto en el árbol (por fechas) como en la tabla de dispersión (por usuarios).
 
-Los comandos `mcuac` y `pcuac` introducirán el cuac correspondiente en la lista por orden.
-El comando `last N` debe listar los N últimos mensajes, es decir, los más recientes; si hay menos de N, escribirá los que haya.
-El comando `follow NOMBRE` debe listar los mensajes del usuario NOMBRE.
-El comando `date FECHA1 FECHA2` debe listar los mensajes que estén comprendidos entre FECHA1 y FECHA2, ambas inclusive.
-Los mensajes se listarán siempre usando el orden de los cuacs definido en el ejercicio 004, es decir, desde el más reciente hasta el más antiguo, en caso de empate por orden alfabético del texto, y en caso de empate en orden alfabético del nombre de usuario.
+En este ejercicio se pone a prueba el comando last. Los comandos que pueden aparecer en este ejercicio son mcuac, pcuac, last y exit. El número de cuacs no está limitado.
+El tipo de árboles a utilizar en este ejercicio no está prefijado de antemano. Los alumnos pueden elegir entre usar árboles trie, árboles AVL o árboles B. En cualquier caso, los cuacs no deben duplicarse, sino que el árbol debe apuntar a los cuacs almacenados en la tabla de dispersión.
 
 ## Entrada
 
@@ -23,139 +22,90 @@ Los comandos que pueden aparecer son:
 * Comando mcuac.
 * Comando pcuac.
 * Comando last.
-* Comando follow.
-* Comando date.
 
-El formato de estos comandos es como el explicado en el ejercicio 005. Nunca se insertarán cuacs repetidos (que contengan los mismos datos).
+El formato de estos comandos es como el explicado en el ejercicio 005. Nunca habrá dos cuacs exactamente iguales.
 
 ## Salida
 
-Si el comando leído es de inserción de un cuac (comandos `mcuac` y `pcuac`), debes escribir el número total de cuac leídos hasta ese punto, N, de la forma:
-
-`N cuac`
-
-Si el comando leído es de búsqueda `last N`, debes escribir los últimos N cuacs.
-
-Si el comando leído es de búsqueda `follow NOMBRE`, debes escribir los mensajes del usuario NOMBRE.
-
-Si el comando leído es de búsqueda `date FECHA1 FECHA2`, debes escribir los mensajes comprendidos entre FECHA1 y FECHA2, ambas inclusive.
-
-Los mensajes se escribirán siempre desde el más reciente hasta el más antiguo (usando el orden de la clase Cuac definido en el ejercicio 004). Y en primer lugar se escribirá la línea de búsqueda correspondiente. El formato será el siguiente:
-
-```
-LINEA_DE_BUSQUEDA
-1. NOMBRE_USUARIO FECHA_HORA
-   MENSAJE
-2. NOMBRE_USUARIO FECHA_HORA
-   MENSAJE
-...
-N. NOMBRE_USUARIO FECHA_HORA
-   MENSAJE
-Total: N cuac
-```
-
-Si no hay ningún cuac en la búsqueda, se escribirá simplemente: `Total: 0 cuac`.
+El formato de salida para cada uno de los comandos es el mismo que el explicado en el ejercicio 006. Recuerda que los cuacs se deben listar de más reciente a más antiguo, en caso de empate a fecha de menor a mayor orden alfabético de texto, y en caso de empate de menor a mayor orden alfabético de nombre de usuario.
 
 ## Ejemplo de Entrada
 
 ```
-mcuac RafaelNaval
-25/10/2011 13:45:11
-¡Feliz Navidad #amigosdenaval y próspero año nuevo!
-pcuac RafaelNaval
-28/11/2012 11:27:08
-5
-last 1
+last 4
+pcuac David
+26/11/2001 18:17:18
+2
+pcuac Ginés
+9/4/2003 19:17:05
+17
 last 3
-follow Perico
-follow RafaelNaval
-mcuac GinesGM
-6/5/2012 16:00:00
-Dicen en #eltiempo que este lunes va a venir una tormenta muy grande...
-date 28/11/2011 11:27:04 28/11/2012 11:27:08
-pcuac Gutierrez
-1/1/2012 00:00:00
-27
-last 100
-pcuac GinesGM
-1/1/2012 00:00:00
-30
-mcuac GinesGM
-1/1/2012 00:00:00
-Muchas gracias...
-follow GinesGM
+pcuac David
+4/5/2005 02:33:47
+22
+mcuac Pepa
+26/2/2014 22:03:18
+El volcán de #ElHierro vuelve a lanzar magma humeante a la superficie del mar.
+last 2
+last 3
+pcuac Pepa
+21/8/2015 10:51:45
+24
+mcuac Pepa
+26/2/2014 22:03:18
+Un nuevo experimento con #neutrinos puede explicar el misterio de la materia.
+last 1
 last 5
-date 6/5/2012 16:00:00 1/1/2013 00:00:00
-exit
+last 0
 ```
 
 ## Ejemplo de Salida
 
 ```
+last 4
+Total: 0 cuac
 1 cuac
 2 cuac
-last 1
-1. RafaelNaval 28/11/2012 11:27:08
-   Enhorabuena, campeones!
-Total: 1 cuac
 last 3
-1. RafaelNaval 28/11/2012 11:27:08
-   Enhorabuena, campeones!
-2. RafaelNaval 25/10/2011 13:45:11
-   ¡Feliz Navidad #amigosdenaval y próspero año nuevo!
-Total: 2 cuac
-follow Perico
-Total: 0 cuac
-follow RafaelNaval
-1. RafaelNaval 28/11/2012 11:27:08
-   Enhorabuena, campeones!
-2. RafaelNaval 25/10/2011 13:45:11
-   ¡Feliz Navidad #amigosdenaval y próspero año nuevo!
+1. Ginés 9/4/2003 19:17:05
+   Todo tiempo pasado fue anterior.
+2. David 26/11/2001 18:17:18
+   Negativo.
 Total: 2 cuac
 3 cuac
-date 28/11/2011 11:27:04 28/11/2012 11:27:08
-1. RafaelNaval 28/11/2012 11:27:08
-   Enhorabuena, campeones!
-2. GinesGM 6/5/2012 16:00:00
-   Dicen en #eltiempo que este lunes va a venir una tormenta muy grande...
-Total: 2 cuac
 4 cuac
-last 100
-1. RafaelNaval 28/11/2012 11:27:08
-   Enhorabuena, campeones!
-2. GinesGM 6/5/2012 16:00:00
-   Dicen en #eltiempo que este lunes va a venir una tormenta muy grande...
-3. Gutierrez 1/1/2012 00:00:00
-   Me despido hasta la proxima. Buen viaje!
-4. RafaelNaval 25/10/2011 13:45:11
-   ¡Feliz Navidad #amigosdenaval y próspero año nuevo!
-Total: 4 cuac
+last 2
+1. Pepa 26/2/2014 22:03:18
+   El volcán de #ElHierro vuelve a lanzar magma humeante a la superficie del mar.
+2. David 4/5/2005 02:33:47
+   Me gustaria ser valiente. Mi dentista asegura que no lo soy.
+Total: 2 cuac
+last 3
+1. Pepa 26/2/2014 22:03:18
+   El volcán de #ElHierro vuelve a lanzar magma humeante a la superficie del mar.
+2. David 4/5/2005 02:33:47
+   Me gustaria ser valiente. Mi dentista asegura que no lo soy.
+3. Ginés 9/4/2003 19:17:05
+   Todo tiempo pasado fue anterior.
+Total: 3 cuac
 5 cuac
 6 cuac
-follow GinesGM
-1. GinesGM 6/5/2012 16:00:00
-   Dicen en #eltiempo que este lunes va a venir una tormenta muy grande...
-2. GinesGM 1/1/2012 00:00:00
-   El que quiera saber mas, que se vaya a Salamanca.
-3. GinesGM 1/1/2012 00:00:00
-   Muchas gracias...
-Total: 3 cuac
+last 1
+1. Pepa 21/8/2015 10:51:45
+   Hoy me ha pasado una cosa tan increible que es mentira.
+Total: 1 cuac
 last 5
-1. RafaelNaval 28/11/2012 11:27:08
-   Enhorabuena, campeones!
-2. GinesGM 6/5/2012 16:00:00
-   Dicen en #eltiempo que este lunes va a venir una tormenta muy grande...
-3. GinesGM 1/1/2012 00:00:00
-   El que quiera saber mas, que se vaya a Salamanca.
-4. Gutierrez 1/1/2012 00:00:00
-   Me despido hasta la proxima. Buen viaje!
-5. GinesGM 1/1/2012 00:00:00
-   Muchas gracias...
+1. Pepa 21/8/2015 10:51:45
+   Hoy me ha pasado una cosa tan increible que es mentira.
+2. Pepa 26/2/2014 22:03:18
+   El volcán de #ElHierro vuelve a lanzar magma humeante a la superficie del mar.
+3. Pepa 26/2/2014 22:03:18
+   Un nuevo experimento con #neutrinos puede explicar el misterio de la materia.
+4. David 4/5/2005 02:33:47
+   Me gustaria ser valiente. Mi dentista asegura que no lo soy.
+5. Ginés 9/4/2003 19:17:05
+   Todo tiempo pasado fue anterior.
 Total: 5 cuac
-date 6/5/2012 16:00:00 1/1/2013 00:00:00
-1. RafaelNaval 28/11/2012 11:27:08
-   Enhorabuena, campeones!
-2. GinesGM 6/5/2012 16:00:00
-   Dicen en #eltiempo que este lunes va a venir una tormenta muy grande...
-Total: 2 cuac
+last 0
+Total: 0 cuac
 ```

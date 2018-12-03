@@ -1,18 +1,15 @@
-# 006 - Diccionario de Cuacs con Listas 
+# Árboles de Cuacs para Date
 
 ## Contexto
 
-En este ejercicio vamos a crear una primera versión funcional del CUACKER. El elemento básico será el contenedor, el diccionario de cuacs. Empezaremos con una implementación muy sencilla mediante una lista de cuacs. Crearemos una nueva clase DiccionarioCuacs que contendrá una lista donde se inserten los cuacs ordenados por fecha. Todas las operaciones de consulta obligatorias (last, follow y date) se harán mediante simples recorridos en esta lista.
+Una vez que tenemos implementados los árboles de fechas, en este ejercicio se trata de resolver de forma eficiente la operación date de consulta por fechas. En principio, siempre que se haga bien, tanto los árboles trie, como los AVL y los árboles B pueden ser adecuados para este problema.
 
 ## El Problema
 
-Crear una nueva clase DiccionarioCuacs para almacenar listas de cuacs. Con ella, escribir un programa que sea capaz de procesar los comandos `mcuac`, `pcuac`, `last`, `follow` y `date`:
+A partir del programa del ejercicio 300, añadir la operación para poder consultar de manera eficiente los mensajes que están en un rango de fechas, es decir, el comando date.
 
-Los comandos `mcuac` y `pcuac` introducirán el cuac correspondiente en la lista por orden.
-El comando `last N` debe listar los N últimos mensajes, es decir, los más recientes; si hay menos de N, escribirá los que haya.
-El comando `follow NOMBRE` debe listar los mensajes del usuario NOMBRE.
-El comando `date FECHA1 FECHA2` debe listar los mensajes que estén comprendidos entre FECHA1 y FECHA2, ambas inclusive.
-Los mensajes se listarán siempre usando el orden de los cuacs definido en el ejercicio 004, es decir, desde el más reciente hasta el más antiguo, en caso de empate por orden alfabético del texto, y en caso de empate en orden alfabético del nombre de usuario.
+Los comandos que pueden aparecer en este ejercicio son mcuac, pcuac, date y exit. El número de cuacs no está limitado.
+Sea cual sea el tipo de árboles utilizado, la implementación de la operación debe hacerse de manera eficiente, de forma que no se necesite recorrer todo el árbol. En otro caso, casi seguro que el programa dará un error de tiempo límite excedido.
 
 ## Entrada
 
@@ -22,140 +19,104 @@ Los comandos que pueden aparecer son:
 
 * Comando mcuac.
 * Comando pcuac.
-* Comando last.
-* Comando follow.
 * Comando date.
 
-El formato de estos comandos es como el explicado en el ejercicio 005. Nunca se insertarán cuacs repetidos (que contengan los mismos datos).
+El formato de estos comandos es como el explicado en el ejercicio 005. Nunca habrá dos cuacs exactamente iguales.
 
 ## Salida
 
-Si el comando leído es de inserción de un cuac (comandos `mcuac` y `pcuac`), debes escribir el número total de cuac leídos hasta ese punto, N, de la forma:
-
-`N cuac`
-
-Si el comando leído es de búsqueda `last N`, debes escribir los últimos N cuacs.
-
-Si el comando leído es de búsqueda `follow NOMBRE`, debes escribir los mensajes del usuario NOMBRE.
-
-Si el comando leído es de búsqueda `date FECHA1 FECHA2`, debes escribir los mensajes comprendidos entre FECHA1 y FECHA2, ambas inclusive.
-
-Los mensajes se escribirán siempre desde el más reciente hasta el más antiguo (usando el orden de la clase Cuac definido en el ejercicio 004). Y en primer lugar se escribirá la línea de búsqueda correspondiente. El formato será el siguiente:
-
-```
-LINEA_DE_BUSQUEDA
-1. NOMBRE_USUARIO FECHA_HORA
-   MENSAJE
-2. NOMBRE_USUARIO FECHA_HORA
-   MENSAJE
-...
-N. NOMBRE_USUARIO FECHA_HORA
-   MENSAJE
-Total: N cuac
-```
-
-Si no hay ningún cuac en la búsqueda, se escribirá simplemente: `Total: 0 cuac`.
+El formato de salida para cada uno de los comandos es el mismo que el explicado en el ejercicio 006. Recuerda que los cuacs se deben listar de más reciente a más antiguo, en caso de empate a fecha de menor a mayor orden alfabético de texto, y en caso de empate de menor a mayor orden alfabético de nombre de usuario.
 
 ## Ejemplo de Entrada
 
 ```
-mcuac RafaelNaval
-25/10/2011 13:45:11
-¡Feliz Navidad #amigosdenaval y próspero año nuevo!
-pcuac RafaelNaval
-28/11/2012 11:27:08
-5
-last 1
-last 3
-follow Perico
-follow RafaelNaval
-mcuac GinesGM
-6/5/2012 16:00:00
-Dicen en #eltiempo que este lunes va a venir una tormenta muy grande...
-date 28/11/2011 11:27:04 28/11/2012 11:27:08
-pcuac Gutierrez
-1/1/2012 00:00:00
-27
-last 100
-pcuac GinesGM
-1/1/2012 00:00:00
-30
-mcuac GinesGM
-1/1/2012 00:00:00
-Muchas gracias...
-follow GinesGM
-last 5
-date 6/5/2012 16:00:00 1/1/2013 00:00:00
-exit
+date 1/11/2001 18:17:18 31/11/2001 10:30:00
+pcuac David
+26/11/2001 18:17:18
+2
+pcuac Gines
+9/4/2003 19:17:05
+17
+date 26/11/2001 18:17:18 26/11/2001 18:17:18
+pcuac David
+4/5/2005 02:33:47
+22
+mcuac Pepa
+26/2/2014 22:03:18
+El volcan de #ElHierro vuelve a lanzar magma humeante a la superficie del mar.
+date 26/11/2001 18:17:20 26/2/2014 22:03:18
+date 26/11/2001 18:17:18 26/2/2014 22:03:17
+pcuac Pepa
+21/8/2015 10:51:45
+24
+mcuac Pepa
+20/2/2020 21:07:48
+Un nuevo experimento con #neutrinos puede explicar el misterio de la materia.
+date 26/11/2001 18:17:20 26/2/2020 22:03:18
+date 1/1/2004 00:00:00 31/12/2020 21:07:48
+date 26/2/2014 22:03:18 26/2/2014 22:03:18
+date 26/2/2014 22:03:19 20/2/2020 21:07:47
 ```
 
 ## Ejemplo de Salida
 
 ```
+date 1/11/2001 18:17:18 31/11/2001 10:30:00
+Total: 0 cuac
 1 cuac
 2 cuac
-last 1
-1. RafaelNaval 28/11/2012 11:27:08
-   Enhorabuena, campeones!
+date 26/11/2001 18:17:18 26/11/2001 18:17:18
+1. David 26/11/2001 18:17:18
+   Negativo.
 Total: 1 cuac
-last 3
-1. RafaelNaval 28/11/2012 11:27:08
-   Enhorabuena, campeones!
-2. RafaelNaval 25/10/2011 13:45:11
-   ¡Feliz Navidad #amigosdenaval y próspero año nuevo!
-Total: 2 cuac
-follow Perico
-Total: 0 cuac
-follow RafaelNaval
-1. RafaelNaval 28/11/2012 11:27:08
-   Enhorabuena, campeones!
-2. RafaelNaval 25/10/2011 13:45:11
-   ¡Feliz Navidad #amigosdenaval y próspero año nuevo!
-Total: 2 cuac
 3 cuac
-date 28/11/2011 11:27:04 28/11/2012 11:27:08
-1. RafaelNaval 28/11/2012 11:27:08
-   Enhorabuena, campeones!
-2. GinesGM 6/5/2012 16:00:00
-   Dicen en #eltiempo que este lunes va a venir una tormenta muy grande...
-Total: 2 cuac
 4 cuac
-last 100
-1. RafaelNaval 28/11/2012 11:27:08
-   Enhorabuena, campeones!
-2. GinesGM 6/5/2012 16:00:00
-   Dicen en #eltiempo que este lunes va a venir una tormenta muy grande...
-3. Gutierrez 1/1/2012 00:00:00
-   Me despido hasta la proxima. Buen viaje!
-4. RafaelNaval 25/10/2011 13:45:11
-   ¡Feliz Navidad #amigosdenaval y próspero año nuevo!
-Total: 4 cuac
+date 26/11/2001 18:17:20 26/2/2014 22:03:18
+1. Pepa 26/2/2014 22:03:18
+   
+2. David 4/5/2005 02:33:47
+   Me gustaria ser valiente. Mi dentista asegura que no lo soy.
+3. Gines 9/4/2003 19:17:05
+   Todo tiempo pasado fue anterior.
+Total: 3 cuac
+date 26/11/2001 18:17:18 26/2/2014 22:03:17
+1. David 4/5/2005 02:33:47
+   Me gustaria ser valiente. Mi dentista asegura que no lo soy.
+2. Gines 9/4/2003 19:17:05
+   Todo tiempo pasado fue anterior.
+3. David 26/11/2001 18:17:18
+   Negativo.
+Total: 3 cuac
 5 cuac
 6 cuac
-follow GinesGM
-1. GinesGM 6/5/2012 16:00:00
-   Dicen en #eltiempo que este lunes va a venir una tormenta muy grande...
-2. GinesGM 1/1/2012 00:00:00
-   El que quiera saber mas, que se vaya a Salamanca.
-3. GinesGM 1/1/2012 00:00:00
-   Muchas gracias...
-Total: 3 cuac
-last 5
-1. RafaelNaval 28/11/2012 11:27:08
-   Enhorabuena, campeones!
-2. GinesGM 6/5/2012 16:00:00
-   Dicen en #eltiempo que este lunes va a venir una tormenta muy grande...
-3. GinesGM 1/1/2012 00:00:00
-   El que quiera saber mas, que se vaya a Salamanca.
-4. Gutierrez 1/1/2012 00:00:00
-   Me despido hasta la proxima. Buen viaje!
-5. GinesGM 1/1/2012 00:00:00
-   Muchas gracias...
+date 26/11/2001 18:17:20 26/2/2020 22:03:18
+1. Pepa 20/2/2020 21:07:48
+   
+2. Pepa 21/8/2015 10:51:45
+   Hoy me ha pasado una cosa tan increible que es mentira.
+3. Pepa 26/2/2014 22:03:18
+   
+4. David 4/5/2005 02:33:47
+   Me gustaria ser valiente. Mi dentista asegura que no lo soy.
+5. Gines 9/4/2003 19:17:05
+   Todo tiempo pasado fue anterior.
 Total: 5 cuac
-date 6/5/2012 16:00:00 1/1/2013 00:00:00
-1. RafaelNaval 28/11/2012 11:27:08
-   Enhorabuena, campeones!
-2. GinesGM 6/5/2012 16:00:00
-   Dicen en #eltiempo que este lunes va a venir una tormenta muy grande...
-Total: 2 cuac
+date 1/1/2004 00:00:00 31/12/2020 21:07:48
+1. Pepa 20/2/2020 21:07:48
+   
+2. Pepa 21/8/2015 10:51:45
+   Hoy me ha pasado una cosa tan increible que es mentira.
+3. Pepa 26/2/2014 22:03:18
+   
+4. David 4/5/2005 02:33:47
+   Me gustaria ser valiente. Mi dentista asegura que no lo soy.
+Total: 4 cuac
+date 26/2/2014 22:03:18 26/2/2014 22:03:18
+1. Pepa 26/2/2014 22:03:18
+   
+Total: 1 cuac
+date 26/2/2014 22:03:19 20/2/2020 21:07:47
+1. Pepa 21/8/2015 10:51:45
+   Hoy me ha pasado una cosa tan increible que es mentira.
+Total: 1 cuac
 ```

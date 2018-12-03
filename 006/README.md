@@ -1,4 +1,4 @@
-# 006 - Diccionario de Cuacs con Listas 
+# 006 - Diccionario de Cuacs con Listas
 
 ## Contexto
 
