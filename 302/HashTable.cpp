@@ -1,34 +1,22 @@
 #include "HashTable.hpp"
-#include <cmath>
+#include <cstdlib>
 #include "Tweet.hpp"
 
 //
 // PUBLIC
 //
-template <class TK, class TV>
-HashTable<TK, TV>::HashTable() {
-  table.clear();
-}
-
-template <class TK, class TV>
-HashTable<TK, TV>::~HashTable() {}
-
-template <class TK, class TV>
-void HashTable<TK, TV>::insert(TK key, TV value) {
+void HashTable::insert(string key, Tweet* value) {
   int h = hash(key);
-  // TK h = key;
 
-  typename list<TV>::iterator it = table[h].begin();
-  while (it != table[h].end() && (*it) < value) {
+  typename list<Tweet*>::iterator it = table[h].begin();
+  while (it != table[h].end() && (*it) > value) {
     it++;
   }
   table[h].insert(it, value);
 }
 
-template <class TK, class TV>
-list<TV> HashTable<TK, TV>::find(TK key) {
+list<Tweet*> HashTable::find(string key) {
   int h = hash(key);
-  // TK h = key;
 
   return table[h];
 }
@@ -36,16 +24,13 @@ list<TV> HashTable<TK, TV>::find(TK key) {
 //
 // PRIVATE
 //
-template <class TK, class TV>
-int HashTable<TK, TV>::hash(TK key) {
+int HashTable::hash(string key) {
   int h = 0;
-  int i = 4;
+  int i = 1;
 
   for (auto k : key) {
-    h += 61 * int(k) + 37 * int(k) * (2 << i++);
+    h += 23 * int(k) + 11 * int(k) * (2 << i++);
   }
 
-  return h % HASH_TABLE;
+  return abs(h % HASH_TABLE);
 }
-
-template class HashTable<string, Tweet *>;

@@ -1,55 +1,63 @@
 #include "AVL.hpp"
-#include <algorithm>
-#include "Date.hpp"
-#include "Tweet.hpp"
 
 //
 // PUBLIC
 //
-template <class TK, class TV>
-bool AVL<TK, TV>::insert(TK key, TV value) {
+void AVL::insert(Date key, Tweet *value) {
   if (root == NULL) {
     root = newNode(key, value);
-  } else {
-    bool goLeft;
-    Node<TK, TV> *n = root, *parent;
-
-    while (n != NULL) {
-      if (n->key == key && (find(n->values.begin(), n->values.end(), value) !=
-                            n->values.end())) {
-        typename list<TV>::iterator it = n->values.begin();
-        while (it != n->values.end() && (*it) < value) {
-          it++;
-        }
-        n->values.insert(it, value);
-
-        return true;
-      }
-
-      parent = n;
-
-      goLeft = n->key > key;
-      n = goLeft ? n->left : n->right;
-    }
-
-    if (goLeft) {
-      parent->left = newNode(key, value, parent);
-    } else {
-      parent->right = newNode(key, value, parent);
-    }
-
-    rebalance(parent);
-  }
-
-  return true;
-}
-
-template <class TK, class TV>
-void AVL<TK, TV>::last(Node<TK, TV> *n, list<TV> &values, int limit) {
-  if ((int)values.size() == limit) {
     return;
   }
-  if (n == NULL) {
+
+  insert(root, key, value);
+}
+
+void AVL::last(list<Tweet *> &values, int limit) {
+  if (root == NULL) {
+    return;
+  }
+
+  last(root, values, limit);
+}
+
+void AVL::between(list<Tweet *> &values, Date start, Date end) {
+  if (root == NULL) {
+    return;
+  }
+
+  between(root, values, start, end);
+}
+
+//
+// PRIVATE
+//
+void AVL::insert(Node *n, Date key, Tweet *value) {
+  if (n->key > key) {
+    if (n->left != NULL) {
+      insert(n->left, key, value);
+    } else {
+      n->left = newNode(key, value, n);
+      rebalance(n);
+    }
+  } else if (n->key == key) {
+    if (!n->has(value)) {
+      n->values.push_back(value);
+      n->values.sort([](const Tweet *const &a, const Tweet *const &b) -> bool {
+        return *a > *b;
+      });
+    }
+  } else {
+    if (n->right != NULL) {
+      insert(n->right, key, value);
+    } else {
+      n->right = newNode(key, value, n);
+      rebalance(n);
+    }
+  }
+}
+
+void AVL::last(Node *n, list<Tweet *> &values, int limit) {
+  if ((int)values.size() == limit) {
     return;
   }
 
@@ -57,7 +65,7 @@ void AVL<TK, TV>::last(Node<TK, TV> *n, list<TV> &values, int limit) {
     last(n->right, values, limit);
   }
 
-  typename list<TV>::iterator it = n->values.begin();
+  list<Tweet *>::iterator it = n->values.begin();
   while (it != n->values.end() && (int)values.size() < limit) {
     values.push_back(*it);
     it++;
@@ -68,18 +76,13 @@ void AVL<TK, TV>::last(Node<TK, TV> *n, list<TV> &values, int limit) {
   }
 }
 
-template <class TK, class TV>
-void AVL<TK, TV>::between(Node<TK, TV> *n, list<TV> &values, TK start, TK end) {
-  if (n == NULL) {
-    return;
-  }
-
+void AVL::between(Node *n, list<Tweet *> &values, Date start, Date end) {
   if (n->left != NULL) {
     between(n->left, values, start, end);
   }
 
   if (n->key >= start && n->key <= end) {
-    typename list<TV>::iterator it = n->values.begin();
+    list<Tweet *>::iterator it = n->values.begin();
     while (it != n->values.end()) {
       values.push_back(*it);
       it++;
@@ -91,32 +94,20 @@ void AVL<TK, TV>::between(Node<TK, TV> *n, list<TV> &values, TK start, TK end) {
   }
 }
 
-template <class TK, class TV>
-Node<TK, TV> *AVL<TK, TV>::getRoot() {
-  return root;
-}
-
-//
-// PRIVATE
-//
-template <class TK, class TV>
-Node<TK, TV> *AVL<TK, TV>::newNode(TK key, TV value) {
-  Node<TK, TV> *node = new Node<TK, TV>();
+Node *AVL::newNode(Date key, Tweet *value) {
+  Node *node = new Node();
   node->key = key;
-  node->values.clear();
   node->values.push_back(value);
   return node;
 }
 
-template <class TK, class TV>
-Node<TK, TV> *AVL<TK, TV>::newNode(TK key, TV value, Node<TK, TV> *parent) {
-  Node<TK, TV> *node = newNode(key, value);
+Node *AVL::newNode(Date key, Tweet *value, Node *parent) {
+  Node *node = newNode(key, value);
   node->parent = parent;
   return node;
 }
 
-template <class TK, class TV>
-void AVL<TK, TV>::rebalance(Node<TK, TV> *n) {
+void AVL::rebalance(Node *n) {
   setBalance(n);
 
   switch (n->balance) {
@@ -152,9 +143,8 @@ void AVL<TK, TV>::rebalance(Node<TK, TV> *n) {
   }
 }
 
-template <class TK, class TV>
-Node<TK, TV> *AVL<TK, TV>::rotateLeft(Node<TK, TV> *a) {
-  Node<TK, TV> *b = a->right;
+Node *AVL::rotateLeft(Node *a) {
+  Node *b = a->right;
   b->parent = a->parent;
   a->right = b->left;
 
@@ -176,9 +166,8 @@ Node<TK, TV> *AVL<TK, TV>::rotateLeft(Node<TK, TV> *a) {
   return b;
 }
 
-template <class TK, class TV>
-Node<TK, TV> *AVL<TK, TV>::rotateRight(Node<TK, TV> *a) {
-  Node<TK, TV> *b = a->left;
+Node *AVL::rotateRight(Node *a) {
+  Node *b = a->left;
   b->parent = a->parent;
   a->left = b->right;
 
@@ -200,27 +189,21 @@ Node<TK, TV> *AVL<TK, TV>::rotateRight(Node<TK, TV> *a) {
   return b;
 }
 
-template <class TK, class TV>
-Node<TK, TV> *AVL<TK, TV>::rotateDoubleLeft(Node<TK, TV> *n) {
+Node *AVL::rotateDoubleLeft(Node *n) {
   n->left = rotateLeft(n->left);
   return rotateRight(n);
 }
 
-template <class TK, class TV>
-Node<TK, TV> *AVL<TK, TV>::rotateDoubleRight(Node<TK, TV> *n) {
+Node *AVL::rotateDoubleRight(Node *n) {
   n->right = rotateRight(n->right);
   return rotateLeft(n);
 }
 
-template <class TK, class TV>
-int AVL<TK, TV>::height(Node<TK, TV> *n) {
+int AVL::height(Node *n) {
   if (n == NULL) return -1;
   return 1 + max(height(n->left), height(n->right));
 }
 
-template <class TK, class TV>
-void AVL<TK, TV>::setBalance(Node<TK, TV> *n) {
+void AVL::setBalance(Node *n) {
   n->balance = height(n->right) - height(n->left);
 }
-
-template class AVL<Date, Tweet *>;

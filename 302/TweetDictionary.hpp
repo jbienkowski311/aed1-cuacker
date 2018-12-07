@@ -1,9 +1,7 @@
 #ifndef _CLASS_TWEET_DICTIONARY
 #define _CLASS_TWEET_DICTIONARY
 
-#include <list>
 #include <string>
-#include <vector>
 #include "AVL.hpp"
 #include "HashTable.hpp"
 #include "Tweet.hpp"
@@ -20,7 +18,7 @@ class TweetDictionary {
 
  private:
   int count;
-  HashTable<string, Tweet*> tweetsHashTable;
-  AVL<Date, Tweet*> tweetsAVL;
+  HashTable tweetsHashTable;
+  AVL tweetsAVL;
 };
 #endif

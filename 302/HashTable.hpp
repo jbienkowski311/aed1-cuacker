@@ -1,25 +1,23 @@
 #ifndef _CLASS_HASH_TABLE
 #define _CLASS_HASH_TABLE
 
+#include <array>
 #include <iostream>
 #include <list>
-#include <map>
 #include <string>
+#include "Tweet.hpp"
 
 using namespace std;
 
-const int HASH_TABLE = 379;
+const int HASH_TABLE = 6379;
 
-template <class TK, class TV>
 class HashTable {
  public:
-  HashTable();
-  ~HashTable();
-  void insert(TK key, TV value);
-  list<TV> find(TK key);
+  void insert(string key, Tweet* value);
+  list<Tweet*> find(string key);
 
  private:
-  map<int, list<TV>> table;
-  int hash(TK key);
+  array<list<Tweet*>, HASH_TABLE> table;
+  int hash(string key);
 };
 #endif
