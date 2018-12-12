@@ -14,7 +14,7 @@ const int HASH_TABLE = 6379;
 class HashTable {
  public:
   void insert(string key, Tweet* value);
-  list<Tweet*> find(string key);
+  void find(string key, list<Tweet*>& values);
 
  private:
   array<list<Tweet*>, HASH_TABLE> table;

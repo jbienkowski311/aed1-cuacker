@@ -12,26 +12,26 @@ void AVL::insert(Date key, Tweet *value) {
   insert(root, key, value);
 }
 
-void AVL::last(list<Tweet *> &values, int limit) {
+void AVL::last(int limit, list<Tweet *> &values) {
   if (root == NULL) {
     return;
   }
 
-  last(root, values, limit);
+  last(root, limit, values);
 }
 
-void AVL::between(list<Tweet *> &values, Date start, Date end) {
+void AVL::between(const Date &start, const Date &end, list<Tweet *> &values) {
   if (root == NULL) {
     return;
   }
 
-  between(root, values, start, end);
+  between(root, start, end, values);
 }
 
 //
 // PRIVATE
 //
-void AVL::insert(Node *n, Date key, Tweet *value) {
+void AVL::insert(Node *n, const Date &key, Tweet *value) {
   if (n->key > key) {
     if (n->left != NULL) {
       insert(n->left, key, value);
@@ -56,13 +56,13 @@ void AVL::insert(Node *n, Date key, Tweet *value) {
   }
 }
 
-void AVL::last(Node *n, list<Tweet *> &values, int limit) {
+void AVL::last(Node *n, int limit, list<Tweet *> &values) {
   if ((int)values.size() == limit) {
     return;
   }
 
   if (n->right != NULL) {
-    last(n->right, values, limit);
+    last(n->right, limit, values);
   }
 
   list<Tweet *>::iterator it = n->values.begin();
@@ -72,13 +72,14 @@ void AVL::last(Node *n, list<Tweet *> &values, int limit) {
   }
 
   if (n->left != NULL) {
-    last(n->left, values, limit);
+    last(n->left, limit, values);
   }
 }
 
-void AVL::between(Node *n, list<Tweet *> &values, Date start, Date end) {
+void AVL::between(Node *n, const Date &start, const Date &end,
+                  list<Tweet *> &values) {
   if (n->left != NULL) {
-    between(n->left, values, start, end);
+    between(n->left, start, end, values);
   }
 
   if (n->key >= start && n->key <= end) {
@@ -90,7 +91,7 @@ void AVL::between(Node *n, list<Tweet *> &values, Date start, Date end) {
   }
 
   if (n->right != NULL) {
-    between(n->right, values, start, end);
+    between(n->right, start, end, values);
   }
 }
 

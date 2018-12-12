@@ -29,15 +29,16 @@ class AVL {
   AVL() : root(NULL){};
   ~AVL() { delete root; };
   void insert(Date key, Tweet* value);
-  void last(list<Tweet*>& values, int limit);
-  void between(list<Tweet*>& values, Date start, Date end);
+  void last(int limit, list<Tweet*>& values);
+  void between(const Date& start, const Date& end, list<Tweet*>& values);
 
  private:
   Node* root;
 
-  void insert(Node* n, Date key, Tweet* value);
-  void last(Node* n, list<Tweet*>& values, int limit);
-  void between(Node* n, list<Tweet*>& values, Date start, Date end);
+  void insert(Node* n, const Date& key, Tweet* value);
+  void last(Node* n, int limit, list<Tweet*>& values);
+  void between(Node* n, const Date& start, const Date& end,
+               list<Tweet*>& values);
   Node* newNode(Date key, Tweet* value);
   Node* newNode(Date key, Tweet* value, Node* parent);
   void rebalance(Node* n);
