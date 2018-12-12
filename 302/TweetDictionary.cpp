@@ -1,5 +1,5 @@
 #include "TweetDictionary.hpp"
-#include <list>
+#include <set>
 
 TweetDictionary::TweetDictionary() : count(0) {}
 
@@ -11,7 +11,7 @@ void TweetDictionary::insert(Tweet* tweet) {
 
 void TweetDictionary::last(int n) {
   int i = 0;
-  list<Tweet*> tweets;
+  set<Tweet*, TweetComp> tweets;
 
   tweetsAVL.last(n, tweets);
 
@@ -24,7 +24,7 @@ void TweetDictionary::last(int n) {
 
 void TweetDictionary::follow(string name) {
   int i = 0;
-  list<Tweet*> tweets;
+  set<Tweet*, TweetComp> tweets;
 
   tweetsHashTable.find(name, tweets);
 
@@ -37,7 +37,7 @@ void TweetDictionary::follow(string name) {
 
 void TweetDictionary::date(const Date& start, const Date& end) {
   int i = 0;
-  list<Tweet*> tweets;
+  set<Tweet*, TweetComp> tweets;
 
   tweetsAVL.between(start, end, tweets);
 

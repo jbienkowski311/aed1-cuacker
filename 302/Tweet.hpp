@@ -25,4 +25,10 @@ class Tweet {
   friend ostream &operator<<(ostream &os, const Tweet &t);
   friend ostream &operator<<(ostream &os, const Tweet *t);
 };
+
+struct TweetComp {
+  bool operator()(const Tweet *const &a, const Tweet *const &b) const {
+    return *a > *b;
+  }
+};
 #endif

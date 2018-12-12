@@ -12,7 +12,7 @@ void AVL::insert(Date key, Tweet *value) {
   insert(root, key, value);
 }
 
-void AVL::last(int limit, list<Tweet *> &values) {
+void AVL::last(int limit, set<Tweet *, TweetComp> &values) {
   if (root == NULL) {
     return;
   }
@@ -20,7 +20,8 @@ void AVL::last(int limit, list<Tweet *> &values) {
   last(root, limit, values);
 }
 
-void AVL::between(const Date &start, const Date &end, list<Tweet *> &values) {
+void AVL::between(const Date &start, const Date &end,
+                  set<Tweet *, TweetComp> &values) {
   if (root == NULL) {
     return;
   }
@@ -40,12 +41,7 @@ void AVL::insert(Node *n, const Date &key, Tweet *value) {
       rebalance(n);
     }
   } else if (n->key == key) {
-    list<Tweet *>::iterator it = n->values.begin();
-    while (it != n->values.end() && *(*it) >= *value) {
-      if (*(*it) == *value) return;
-      it++;
-    }
-    n->values.insert(it, value);
+    n->values.insert(value);
   } else {
     if (n->right != NULL) {
       insert(n->right, key, value);
@@ -56,7 +52,7 @@ void AVL::insert(Node *n, const Date &key, Tweet *value) {
   }
 }
 
-void AVL::last(Node *n, int limit, list<Tweet *> &values) {
+void AVL::last(Node *n, int limit, set<Tweet *, TweetComp> &values) {
   if ((int)values.size() == limit) {
     return;
   }
@@ -65,9 +61,9 @@ void AVL::last(Node *n, int limit, list<Tweet *> &values) {
     last(n->right, limit, values);
   }
 
-  list<Tweet *>::iterator it = n->values.begin();
+  auto it = n->values.begin();
   while (it != n->values.end() && (int)values.size() < limit) {
-    values.push_back(*it);
+    values.insert(*it);
     it++;
   }
 
@@ -77,15 +73,15 @@ void AVL::last(Node *n, int limit, list<Tweet *> &values) {
 }
 
 void AVL::between(Node *n, const Date &start, const Date &end,
-                  list<Tweet *> &values) {
+                  set<Tweet *, TweetComp> &values) {
   if (n->right != NULL) {
     between(n->right, start, end, values);
   }
 
   if (n->key >= start && n->key <= end) {
-    list<Tweet *>::iterator it = n->values.begin();
+    auto it = n->values.begin();
     while (it != n->values.end()) {
-      values.push_back(*it);
+      values.insert(*it);
       it++;
     }
   }
@@ -98,7 +94,7 @@ void AVL::between(Node *n, const Date &start, const Date &end,
 Node *AVL::newNode(Date key, Tweet *value) {
   Node *node = new Node();
   node->key = key;
-  node->values.push_back(value);
+  node->values.insert(value);
   return node;
 }
 
