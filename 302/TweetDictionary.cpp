@@ -40,9 +40,6 @@ void TweetDictionary::date(const Date& start, const Date& end) {
   list<Tweet*> tweets;
 
   tweetsAVL.between(start, end, tweets);
-  // tweets.sort([](const Tweet* const& a, const Tweet* const& b) -> bool {
-  // return *a > *b;
-  // });
 
   cout << "date " << start << " " << end << endl;
   for (Tweet* t : tweets) {
