@@ -40,12 +40,12 @@ void AVL::insert(Node *n, const Date &key, Tweet *value) {
       rebalance(n);
     }
   } else if (n->key == key) {
-    if (!n->has(value)) {
-      n->values.push_back(value);
-      n->values.sort([](const Tweet *const &a, const Tweet *const &b) -> bool {
-        return *a > *b;
-      });
+    list<Tweet *>::iterator it = n->values.begin();
+    while (it != n->values.end() && *(*it) >= *value) {
+      if (*(*it) == *value) return;
+      it++;
     }
+    n->values.insert(it, value);
   } else {
     if (n->right != NULL) {
       insert(n->right, key, value);
@@ -67,7 +67,11 @@ void AVL::last(Node *n, int limit, list<Tweet *> &values) {
 
   list<Tweet *>::iterator it = n->values.begin();
   while (it != n->values.end() && (int)values.size() < limit) {
-    values.push_back(*it);
+    list<Tweet *>::iterator itV = values.begin();
+    while (itV != values.end() && *(*itV) > *(*it)) {
+      itV++;
+    }
+    values.insert(itV, *it);
     it++;
   }
 
@@ -85,7 +89,11 @@ void AVL::between(Node *n, const Date &start, const Date &end,
   if (n->key >= start && n->key <= end) {
     list<Tweet *>::iterator it = n->values.begin();
     while (it != n->values.end()) {
-      values.push_back(*it);
+      list<Tweet *>::iterator itV = values.begin();
+      while (itV != values.end() && *(*itV) > *(*it)) {
+        itV++;
+      }
+      values.insert(itV, *it);
       it++;
     }
   }

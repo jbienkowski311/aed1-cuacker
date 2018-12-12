@@ -1,5 +1,4 @@
 #include "TweetDictionary.hpp"
-#include <algorithm>
 #include <list>
 
 TweetDictionary::TweetDictionary() : count(0) {}
@@ -28,13 +27,6 @@ void TweetDictionary::follow(string name) {
   list<Tweet*> tweets;
 
   tweetsHashTable.find(name, tweets);
-  list<Tweet*>::iterator it = remove_if(
-      tweets.begin(), tweets.end(),
-      [name](const Tweet* const& t) -> bool { return t->author != name; });
-  tweets.erase(it, tweets.end());
-  tweets.sort([](const Tweet* const& a, const Tweet* const& b) -> bool {
-    return *a > *b;
-  });
 
   cout << "follow " << name << endl;
   for (Tweet* t : tweets) {
@@ -48,9 +40,9 @@ void TweetDictionary::date(const Date& start, const Date& end) {
   list<Tweet*> tweets;
 
   tweetsAVL.between(start, end, tweets);
-  tweets.sort([](const Tweet* const& a, const Tweet* const& b) -> bool {
-    return *a > *b;
-  });
+  // tweets.sort([](const Tweet* const& a, const Tweet* const& b) -> bool {
+  // return *a > *b;
+  // });
 
   cout << "date " << start << " " << end << endl;
   for (Tweet* t : tweets) {

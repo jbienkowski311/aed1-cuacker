@@ -16,12 +16,6 @@ struct Node {
   Node* left;
   Node* right;
   Node* parent;
-
-  bool has(const Tweet* const& value) {
-    return find_if(values.begin(), values.end(),
-                   [value](const Tweet* const& t) { return *value == *t; }) !=
-           values.end();
-  }
 };
 
 class AVL {

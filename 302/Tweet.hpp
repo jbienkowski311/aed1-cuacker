@@ -20,6 +20,8 @@ class Tweet {
   bool operator>(const Tweet &t) const;
   bool operator==(const Tweet &t);
   bool operator==(const Tweet &t) const;
+  bool operator>=(const Tweet &t);
+  bool operator>=(const Tweet &t) const;
   friend ostream &operator<<(ostream &os, const Tweet &t);
   friend ostream &operator<<(ostream &os, const Tweet *t);
 };

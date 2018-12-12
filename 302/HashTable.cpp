@@ -9,7 +9,8 @@ void HashTable::insert(string key, Tweet* value) {
   int h = hash(key);
 
   list<Tweet*>::iterator it = table[h].begin();
-  while (it != table[h].end() && (*it) > value) {
+  while (it != table[h].end() && *(*it) >= *value) {
+    if (*(*it) == *value) return;
     it++;
   }
   table[h].insert(it, value);
@@ -18,7 +19,13 @@ void HashTable::insert(string key, Tweet* value) {
 void HashTable::find(string key, list<Tweet*>& values) {
   int h = hash(key);
 
-  values = table[h];
+  list<Tweet*>::iterator it = table[h].begin();
+  while (it != table[h].end()) {
+    if ((*it)->author == key) {
+      values.push_back(*it);
+    }
+    it++;
+  }
 }
 
 //
