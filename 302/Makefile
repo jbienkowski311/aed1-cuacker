@@ -26,11 +26,20 @@ inputs:
 	wget http://dis.um.es/profesores/ginesgm/files/doc/aed/practicas/$(PROGRAM)a.out -O $(PROGRAM)a.out
 
 diff:
+	./a.out < 200a.in > 200.out
+	diff 200.out 200a.out && (echo "validation passed"; exit 0) || (echo "output validation 200 failed"; exit 1)
+	./a.out < 300a.in > 300.out
+	diff 300.out 300a.out && (echo "validation passed"; exit 0) || (echo "output validation 300a failed"; exit 1)
+	./a.out < 300b.in > 300.out
+	diff 300.out 300b.out && (echo "validation passed"; exit 0) || (echo "output validation 300b failed"; exit 1)
+	./a.out < 301a.in > 301.out
+	diff 301.out 301a.out && (echo "validation passed"; exit 0) || (echo "output validation 301 failed"; exit 1)
 	./a.out < $(PROGRAM)a.in > $(PROGRAM).out
 	diff $(PROGRAM).out $(PROGRAM)a.out && (echo "validation passed"; exit 0) || (echo "output validation failed"; exit 1)
 
 clean:
-	rm -f *.o *.in *.out *.tar
+	#rm -f *.o *.in *.out *.tar
+	rm -f *.o *.tar
 
 tar:
 	tar -cf archivo.tar *.cpp *.hpp Makefile

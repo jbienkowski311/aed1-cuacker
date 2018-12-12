@@ -3,7 +3,7 @@
 
 #include <array>
 #include <iostream>
-#include <list>
+#include <set>
 #include <string>
 #include "Tweet.hpp"
 
@@ -14,10 +14,10 @@ const int HASH_TABLE = 6379;
 class HashTable {
  public:
   void insert(string key, Tweet* value);
-  list<Tweet*> find(string key);
+  void find(string key, set<Tweet*, TweetComp>& values);
 
  private:
-  array<list<Tweet*>, HASH_TABLE> table;
+  array<set<Tweet*, TweetComp>, HASH_TABLE> table;
   int hash(string key);
 };
 #endif

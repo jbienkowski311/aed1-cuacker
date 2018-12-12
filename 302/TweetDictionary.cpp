@@ -1,6 +1,5 @@
 #include "TweetDictionary.hpp"
-#include <algorithm>
-#include <list>
+#include <set>
 
 TweetDictionary::TweetDictionary() : count(0) {}
 
@@ -12,9 +11,9 @@ void TweetDictionary::insert(Tweet* tweet) {
 
 void TweetDictionary::last(int n) {
   int i = 0;
-  list<Tweet*> tweets;
+  set<Tweet*, TweetComp> tweets;
 
-  tweetsAVL.last(tweets, n);
+  tweetsAVL.last(n, tweets);
 
   cout << "last " << n << endl;
   for (Tweet* t : tweets) {
@@ -25,14 +24,9 @@ void TweetDictionary::last(int n) {
 
 void TweetDictionary::follow(string name) {
   int i = 0;
-  list<Tweet*> tweets = tweetsHashTable.find(name);
-  list<Tweet*>::iterator it = remove_if(
-      tweets.begin(), tweets.end(),
-      [name](const Tweet* const& t) -> bool { return t->author != name; });
-  tweets.erase(it, tweets.end());
-  tweets.sort([](const Tweet* const& a, const Tweet* const& b) -> bool {
-    return *a > *b;
-  });
+  set<Tweet*, TweetComp> tweets;
+
+  tweetsHashTable.find(name, tweets);
 
   cout << "follow " << name << endl;
   for (Tweet* t : tweets) {
@@ -41,14 +35,11 @@ void TweetDictionary::follow(string name) {
   cout << "Total: " << i << " cuac" << endl;
 }
 
-void TweetDictionary::date(Date start, Date end) {
+void TweetDictionary::date(const Date& start, const Date& end) {
   int i = 0;
-  list<Tweet*> tweets;
+  set<Tweet*, TweetComp> tweets;
 
-  tweetsAVL.between(tweets, start, end);
-  tweets.sort([](const Tweet* const& a, const Tweet* const& b) -> bool {
-    return *a > *b;
-  });
+  tweetsAVL.between(start, end, tweets);
 
   cout << "date " << start << " " << end << endl;
   for (Tweet* t : tweets) {

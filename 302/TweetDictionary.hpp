@@ -14,7 +14,7 @@ class TweetDictionary {
   void insert(Tweet* tweet);
   void last(int n);
   void follow(string name);
-  void date(Date start, Date end);
+  void date(const Date& start, const Date& end);
 
  private:
   int count;

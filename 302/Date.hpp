@@ -9,6 +9,7 @@ using namespace std;
 class Date {
  public:
   int D, M, Y, h, m, s;
+  long long int inSeconds;
 
   Date();
   Date(int D, int M, int Y, int h, int m, int s);

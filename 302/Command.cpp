@@ -76,9 +76,9 @@ void Command::interpretMcuac(TweetDictionary* dictionary) {
   cin.ignore(100, '\n');
   getline(cin, message);
 
-  Date* published = new Date(D, M, Y, h, m, s);
+  Date published(D, M, Y, h, m, s);
 
-  Tweet* tweet = new Tweet(*published, author, message);
+  Tweet* tweet = new Tweet(published, author, message);
 
   dictionary->insert(tweet);
 }
@@ -100,11 +100,11 @@ void Command::interpretPcuac(TweetDictionary* dictionary) {
   cin.ignore(100, '\n');
   getline(cin, message);
 
-  Date* published = new Date(D, M, Y, h, m, s);
+  Date published(D, M, Y, h, m, s);
   int messageNumber = stoi(message);
   message = messages[messageNumber - 1];
 
-  Tweet* tweet = new Tweet(*published, author, message);
+  Tweet* tweet = new Tweet(published, author, message);
 
   dictionary->insert(tweet);
 }
