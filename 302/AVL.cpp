@@ -3,7 +3,7 @@
 //
 // PUBLIC
 //
-void AVL::insert(Date key, Tweet *value) {
+void AVL::insert(const Date &key, Tweet *value) {
   if (root == NULL) {
     root = newNode(key, value);
     return;
@@ -91,14 +91,14 @@ void AVL::between(Node *n, const Date &start, const Date &end,
   }
 }
 
-Node *AVL::newNode(Date key, Tweet *value) {
+Node *AVL::newNode(const Date &key, Tweet *value) {
   Node *node = new Node();
   node->key = key;
   node->values.insert(value);
   return node;
 }
 
-Node *AVL::newNode(Date key, Tweet *value, Node *parent) {
+Node *AVL::newNode(const Date &key, Tweet *value, Node *parent) {
   Node *node = newNode(key, value);
   node->parent = parent;
   return node;

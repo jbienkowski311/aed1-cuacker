@@ -22,7 +22,7 @@ class AVL {
  public:
   AVL() : root(NULL){};
   ~AVL() { delete root; };
-  void insert(Date key, Tweet* value);
+  void insert(const Date& key, Tweet* value);
   void last(int limit, set<Tweet*, TweetComp>& values);
   void between(const Date& start, const Date& end,
                set<Tweet*, TweetComp>& values);
@@ -34,8 +34,8 @@ class AVL {
   void last(Node* n, int limit, set<Tweet*, TweetComp>& values);
   void between(Node* n, const Date& start, const Date& end,
                set<Tweet*, TweetComp>& values);
-  Node* newNode(Date key, Tweet* value);
-  Node* newNode(Date key, Tweet* value, Node* parent);
+  Node* newNode(const Date& key, Tweet* value);
+  Node* newNode(const Date& key, Tweet* value, Node* parent);
   void rebalance(Node* n);
   int height(Node* n);
   void setBalance(Node* n);
